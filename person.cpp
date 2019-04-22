@@ -1,10 +1,10 @@
 #include <iostream>
 #include <string>
 #include <fstream>
-
+#include<algorithm>
 using namespace std;
 string memeberInfoFileName = "Member.txt";
-string intakeFileName = "Intake.txt"
+string intakeFileName = "Intake.txt";
 struct Person
 {
 	string name;
@@ -13,14 +13,20 @@ struct Person
     double weight;
     bool gender; //male is true, and female is false
 };
-
+struct Cal
+{
+	string food;
+	double cal;
+};
 int countDailyIntakeFile()
 {
-	ifstream fin(intakeFileName);
-	
+	ifstream fin(intakeFileName.c_str());
+	if(fin.fail()){
+		return 0;
+	}
 	string temp;
 	int i = 0;
-	while (getline(fin))
+	while (getline(fin,temp))
 	{	
 		i++;
 	}
@@ -30,31 +36,73 @@ int countDailyIntakeFile()
 
 void loadMemberInfo(Person & x)
 {
-	ifstream fin(memeberInfoFileName);
-		
+	ifstream fin(memeberInfoFileName.c_str());
+	
 	if(fin.fail())
 	{
-		cout <<"Error in opening the file" <<endl;
+		cout <<"File doesn't exist" <<endl;
 		exit(1);
 	}
-	
-	string temp; double height;	int age; double weight; bool gender;
-	
-	while(fin >> temp >> height >> age >> weight >> gender )
+	string name; double height;	int age; double weight; char gender; bool genderBool = false;
+	if(fin.peek() == std::ifstream::traits_type::eof())
 	{
+		cout<<"Please enter you Name: ";
+		cin>>name;
+		cout<<endl;
+		cout<<"Please enter you Height(cm): ";
+		cin>>height;
+		cout<<endl;
+		cout<<"Please enter you Age: ";
+		cin>>age;
+		cout<<endl;
+		cout<<"Please enter you Weight(kg): ";
+		cin>>weight;
+		cout<<endl;
+		cout<<"Please enter you Gender(M/F): ";
+		cin>>gender;
+		if(gender == 'F' || gender == 'f')
+		{
+			genderBool = false;
+		}
+		cout<<endl;
+		
 		x.name = name;
 		x.height = height;
 		x.age = age;
 		x.weight = weight;
-		x.gender = gender;
+		x.gender = genderBool;
+		return ;//have to exit otherwise it will try to find a file
+	}
+	else
+	{
+		while(fin >> name >> height >> age >> weight >> gender )
+		{
+			x.name = name;
+			x.height = height;
+			x.age = age;
+			x.weight = weight;
+			x.gender = gender;
+		}
 	}
 	
 	fin.close();
 }
-
+double Calculator(Person x)
+{
+	double cal;
+	if(x.gender==false)
+	{
+		cal=10*(x.weight)+6.25*(x.height)-5*(x.age)-161;
+	}
+	else
+	{
+		cal=10*(x.weight)+6.25*(x.height)-5*(x.age)+5;	
+	}
+	return cal;
+}
 void loadDailyIntake(Cal * &intake)
 {
-	ifstream fin(intakeFileName);
+	ifstream fin(intakeFileName.c_str());
 	
 	if(fin.fail())
 	{
@@ -62,7 +110,7 @@ void loadDailyIntake(Cal * &intake)
 		exit(1);
 	}
 	
-	string temp; string calFood;
+	string temp; string calFood; int i = 0;
 	while (getline(fin, temp, ';'))
 	{	
 		getline(fin, calFood);
@@ -78,7 +126,7 @@ void loadDailyIntake(Cal * &intake)
 
 void saveMemberInfo(Person x)
 {
-	ofstream fout(memeberInfoFileName);
+	ofstream fout(memeberInfoFileName.c_str());
 	
 	fout << x.name << endl;
 	fout << x.height << endl;
@@ -89,7 +137,7 @@ void saveMemberInfo(Person x)
 	fout.close();
 }
 
-void saveDailyIntake(Cal * intake, int num)
+/*void saveDailyIntake(Cal * intake, int num)
 {
 	ofstream fout (intakeFileName);
 	if(fout.fail())
@@ -121,22 +169,19 @@ void growIntakeDatabase(Cal * &intake, int & inSize)
 	inSize += 1;//incrementing the size
 }
 
-void addFoodToIntake(Cal * &intake, int &size)
+void addFoodToIntake(Cal * &intake, int &intakesize,Cal * database, int databasesize)
 {
 	string nameToFind;
-	
-	if(search())//write the argument
+	getline(cin,nameToFind);
+	transform(nameToFind.begin(),nameToFind.end(),nameToFind.begin(),::toupper);
+	int index=search(database,databasesize,nameToFind);
+	if(index!=-1)//write the argument
 	{
-		growIntakeDatabase(intake, size);
-		int index = search();
-		intake[size-1].food = ;//we need to load the main database array
-		intake[size-1].cal = ;//how should we access the main database array?
-		
-		transform(intake[size-1].food.begin(),intake[size-1].food.end(),intake[size-1].food.begin(),::toupper);
-		saveDailyIntake();
-		
-	}
-	
+		growIntakeDatabase(intake, intakesize);
+		intake[size-1].food = database[index].food ;//we need to load the main database array
+		intake[size-1].cal =database[index].cal ;//how should we access the main database array?
+		saveDailyIntake(intake,intakesize);//adding to the intakefile
+	}	
 }
 
 void printList(Cal * m, int size)
@@ -157,11 +202,14 @@ double countCal(Cal* m, int size)
 	}
 	return total;
 }
-
+*/
 int main()
 {	
-	int size = countDailyIntakeFile();
-	Cal * dailyIntake [size];
+	int intakesize = countDailyIntakeFile();
+	Cal * dailyIntake [intakesize];
+	Person x;
+	loadMemberInfo(x);
+	saveMemberInfo(x);
 	
 	
 }

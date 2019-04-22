@@ -129,7 +129,7 @@ void addFood(Cal * &foodItems, int &size)
 	
 		foodItems[size-1].food = name;
 		foodItems[size-1].cal = cal;	
-		//write a code which will add this added food item to the persons daily intake list
+		//write a code which will add this added food item to the persons daily intake list*
 		transform(foodItems[size-1].food.begin(),foodItems[size-1].food.end(),foodItems[size-1].food.begin(),::toupper);
 		saveDatabase(foodItems, size);
 		

@@ -132,7 +132,7 @@ void addFood(Cal * &foodItems, int &size, string name)
 		lengthOfName = name.length();
 	}
 	
-	double cal;
+	string cal;
 	cout << "\nEnter the number of calories the food contains: ";
 	cin >> cal;
 	

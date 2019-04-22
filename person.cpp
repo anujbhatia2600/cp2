@@ -18,20 +18,24 @@ struct Cal
 	string food;
 	double cal;
 };
+
+
 int countDailyIntakeFile()
 {
 	ifstream fin(intakeFileName.c_str());
-	if(fin.fail()){
+	if(fin.fail())
+	{
 		return 0;
 	}
-	string temp;
-	int i = 0;
+	
+	string temp; int i = 0;
+	
 	while (getline(fin,temp))
 	{	
 		i++;
 	}
 	fin.close();
-	return i-1;
+	return i;
 }
 
 void loadMemberInfo(Person & x)
@@ -87,7 +91,8 @@ void loadMemberInfo(Person & x)
 	
 	fin.close();
 }
-double Calculator(Person x)
+
+int Calculator(Person x)
 {
 	double cal;
 	if(x.gender==false)
@@ -98,26 +103,27 @@ double Calculator(Person x)
 	{
 		cal=10*(x.weight)+6.25*(x.height)-5*(x.age)+5;	
 	}
-	return cal;
+	return (int)cal;
 }
+
 void loadDailyIntake(Cal * &intake)
 {
 	ifstream fin(intakeFileName.c_str());
 	
 	if(fin.fail())
 	{
-		cout << "Error in opening file" << endl;
+		cout << "File doesn't exist" << endl;
 		exit(1);
 	}
-	
+
 	string temp; string calFood; int i = 0;
 	while (getline(fin, temp, ';'))
 	{	
 		getline(fin, calFood);
-		
+	
 		intake[i].food = temp;
 		intake[i].cal = stod(calFood);//converting string to double is must as its calories
-		
+		cout << "hi"<< endl;
 		i++;
 	}
 	fin.close();
@@ -137,7 +143,7 @@ void saveMemberInfo(Person x)
 	fout.close();
 }
 
-/*void saveDailyIntake(Cal * intake, int num)
+void saveDailyIntake(Cal * intake, int num)
 {
 	ofstream fout (intakeFileName);
 	if(fout.fail())
@@ -148,7 +154,10 @@ void saveMemberInfo(Person x)
 	
 	for(int i = 0; i < num; i++)
 	{
-		fout << foodItems[i].food << ";" << foodItems[i].cal << endl;
+		if(i !=  num-1)
+			fout << intake[i].food << ";" << intake[i].cal << endl;
+		else
+			fout << intake[i].food << ";" << intake[i].cal;
 	}
 	
 	fout.close();
@@ -168,7 +177,7 @@ void growIntakeDatabase(Cal * &intake, int & inSize)
 	intake = intakeNew;
 	inSize += 1;//incrementing the size
 }
-
+/*
 void addFoodToIntake(Cal * &intake, int &intakesize,Cal * database, int databasesize)
 {
 	string nameToFind;
@@ -183,6 +192,7 @@ void addFoodToIntake(Cal * &intake, int &intakesize,Cal * database, int database
 		saveDailyIntake(intake,intakesize);//adding to the intakefile
 	}	
 }
+*/
 
 void printList(Cal * m, int size)
 {
@@ -202,14 +212,24 @@ double countCal(Cal* m, int size)
 	}
 	return total;
 }
-*/
+
+
+
+
 int main()
 {	
 	int intakesize = countDailyIntakeFile();
-	Cal * dailyIntake [intakesize];
+	Cal * dailyIntake = new Cal[intakesize];
+	cout << intakesize;
+
 	Person x;
+	
 	loadMemberInfo(x);
+	int cal = Calculator(x);
+	cout << cal << endl;
 	saveMemberInfo(x);
+
+	loadDailyIntake(dailyIntake);
 	
-	
+	printList(dailyIntake, intakesize);
 }

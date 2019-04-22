@@ -3,22 +3,10 @@
 #include <fstream>
 using namespace std;
 
-int countItems()
-{
-	ifstream fin("CalFile.txt");
-	
-	string temp;
-	int i = 0;
-	while (getline(fin, temp, ';'))
-	{	
-		i++;
-	}
-	fin.close();
-	return i;
-}
-
 int main() 
 {
-	cout << countItems();
+	string x = "2.14n";
+	double m = stod(x);
+	cout << stod(x)+1;
 } 
 

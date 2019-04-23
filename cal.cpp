@@ -1,4 +1,10 @@
 #include "cal.h"
+#include <iostream>
+#include <string>
+#include <fstream>
+#include <algorithm>
+#include <cctype>
+#include <iomanip>
 
 string memeberInfoFileName = "Member.txt";
 string intakeFileName = "Intake.txt";
@@ -160,8 +166,9 @@ void printList(Cal * m, int size)
 {
 	for(int i = 0; i < size; i++)
 	{
-		if(m[i].food!="0")
-			cout << m[i].food << "\t" << m[i].cal << endl;
+		cout << setw(20) << setw(20);
+		cout << left;
+		cout << m[i].food << "\t" << m[i].cal << endl;
 	}
 }
 
@@ -259,16 +266,11 @@ int Calculator(Person x)
 void loadDailyIntake(Cal * &intake)
 {
 	ifstream fin(intakeFileName.c_str());
-	ofstream fout(intakeFileName.c_str());
-	
+
 	if(fin.fail())
 	{
 		cout << "File doesn't exist" << endl;
 		exit(1);
-	}
-	if(fin.peek() == std::ifstream::traits_type::eof())
-	{
-		fout << "0;0";
 	}
 	
 	string name; string calFood; int i = 0;
@@ -281,7 +283,6 @@ void loadDailyIntake(Cal * &intake)
 		i++;
 	}
 	fin.close();
-	fout.close();
 
 }
 
@@ -335,11 +336,8 @@ void growIntakeDatabase(Cal * &intake, int & inSize)
 	inSize += 1;//incrementing the size
 }
 
-void addFoodToIntake(Cal * &intake, int &intakesize,Cal * database, int databasesize)
-{
-	string nameToFind;
-	cout << "Enter food name: ";
-	getline(cin,nameToFind);
+void addFoodToIntake(Cal * &intake, int &intakesize,Cal * database, int databasesize, string nameToFind)
+{	
 	transform(nameToFind.begin(),nameToFind.end(),nameToFind.begin(),::toupper);
 	
 	int index=search(database,databasesize,nameToFind);
@@ -364,13 +362,46 @@ void addFoodToIntake(Cal * &intake, int &intakesize,Cal * database, int database
 double addingTotalIntake(Cal * intake, int size)
 {
 	double total;
+	
+	if(size==1)
+	{
+		return 0;
+	}
 	for(int i = 1; i < size; i++)
 	{
-		total += (double) intake[i].cal;
+		total += stod( intake[i].cal);
 	}
 	return total;
 }
-/*
+
+void updateDailyIntake(Cal *&intake, int size)
+{
+	for(int i = 0; i < size; i++)
+	{
+		cout << "[" << i << "] " << intake[i].food << intake[i].cal; 
+	}
+	
+	int dec;
+	cout << "Choose the number of item you want to edit: ";
+	
+	while(dec < 0 || dec >= size)
+	{
+		cout << "Enter a valid number: ";
+		cin >> dec;
+	}
+	
+	string foodname;
+	cout <<"Enter the food you want to replace it with: ";
+	cin >> foodname;
+	
+	int index = search(intake, size, foodname);
+	
+	
+
+	
+	
+}
+
 int main()
 {
 	int numberOfFoodItems = countItems();
@@ -379,13 +410,58 @@ int main()
 	int counterIntake = countDailyIntakeFile();
 	Cal * dailyIntake = new Cal [counterIntake];//array will contain the name and calories
 	
+	
+//	loadMember(p);
+	loadDailyIntake(dailyIntake);			
 	loadCalDatabase(foodItems);
-	loadDailyIntake(dailyIntake);
 	
-	printList(foodItems, numberOfFoodItems);
+	bool continues = true; // this is for exiting the do loop
 	
-	addFoodToIntake(dailyIntake,counterIntake, foodItems, numberOfFoodItems);
-	printList(dailyIntake, counterIntake);
-
+	do{
+		cout << "\n";		
+		cout << "[ A ]  To add meals to your daily intake" << endl;
+		cout << "[ L ]  List today's intake" << endl;
+		cout << "[ P ]  Print today's total calorie intake" << endl;
+		cout << "[ Q ]  To quit" << endl;
+		
+		cout << "\n\t\t\t\t Enter one letter for your option:  ";
+		char choice;
+		cin >> choice;//convert the char into lower case!
+		//
+		//
+		
+		switch(choice)
+		{
+			case 'a':
+			{
+				string nameToFind;
+				cout << "Enter food name: ";
+				cin >> nameToFind;
+				
+				addFoodToIntake(dailyIntake, counterIntake, foodItems, numberOfFoodItems,nameToFind);
+				break; //case 1 break
+			}
+			case 'l':
+			{
+				printList(dailyIntake,counterIntake);
+				break; //case 2 break
+			}
+			case 'p':
+			{
+				double x = addingTotalIntake(dailyIntake, counterIntake);
+				cout << "Your total calories are: " << x << endl;
+				break;
+			}
+			case 'q':
+			{
+				continues = false;
+				break;
+			}
+			default:
+			{
+				cout << "Invalid choice.";
+				break;
+			}
+		}
+	}while(continues);
 }
-*/

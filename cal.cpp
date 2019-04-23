@@ -1,8 +1,5 @@
 #include "cal.h"
 
-
-using namespace std;
-
 string memeberInfoFileName = "Member.txt";
 string intakeFileName = "Intake.txt";
 
@@ -163,7 +160,8 @@ void printList(Cal * m, int size)
 {
 	for(int i = 0; i < size; i++)
 	{
-		cout << m[i].food << "\t" << m[i].cal << endl;
+		if(m[i].food!="0")
+			cout << m[i].food << "\t" << m[i].cal << endl;
 	}
 }
 
@@ -261,13 +259,18 @@ int Calculator(Person x)
 void loadDailyIntake(Cal * &intake)
 {
 	ifstream fin(intakeFileName.c_str());
+	ofstream fout(intakeFileName.c_str());
 	
 	if(fin.fail())
 	{
 		cout << "File doesn't exist" << endl;
 		exit(1);
 	}
-
+	if(fin.peek() == std::ifstream::traits_type::eof())
+	{
+		fout << "0;0";
+	}
+	
 	string name; string calFood; int i = 0;
 	while (getline(fin, name, ';'))
 	{	
@@ -278,6 +281,7 @@ void loadDailyIntake(Cal * &intake)
 		i++;
 	}
 	fin.close();
+	fout.close();
 
 }
 
@@ -357,7 +361,16 @@ void addFoodToIntake(Cal * &intake, int &intakesize,Cal * database, int database
 	}
 }
 
-
+double addingTotalIntake(Cal * intake, int size)
+{
+	double total;
+	for(int i = 1; i < size; i++)
+	{
+		total += (double) intake[i].cal;
+	}
+	return total;
+}
+/*
 int main()
 {
 	int numberOfFoodItems = countItems();
@@ -375,4 +388,4 @@ int main()
 	printList(dailyIntake, counterIntake);
 
 }
-
+*/

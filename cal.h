@@ -1,6 +1,25 @@
 #ifndef CAL_H
 #define CAL_H
 #include<iostream>
+
+using namespace std;
+
+struct Person
+{
+	string name;
+    double height;
+    int age;
+    double weight;
+    bool gender; //male is true, and female is false
+};
+
+
+struct Cal
+{
+	string food;
+	string cal;
+};
+
 int countDailyIntakeFile();
 int countItems();
 void loadCalDatabase(Cal * &);
@@ -16,6 +35,7 @@ void saveMemberInfo(Person );
 void saveDailyIntake(Cal * , int );
 void growIntakeDatabase(Cal * &, int & );
 void addFoodToIntake(Cal * &, int &,Cal *, int);
+double addingTotalIntake(Cal * , int );
 
 #endif
 

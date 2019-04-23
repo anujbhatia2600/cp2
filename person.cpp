@@ -123,7 +123,6 @@ void loadDailyIntake(Cal * &intake)
 	
 		intake[i].food = temp;
 		intake[i].cal = stod(calFood);//converting string to double is must as its calories
-		cout << "hi"<< endl;
 		i++;
 	}
 	fin.close();
@@ -177,7 +176,7 @@ void growIntakeDatabase(Cal * &intake, int & inSize)
 	intake = intakeNew;
 	inSize += 1;//incrementing the size
 }
-/*
+
 void addFoodToIntake(Cal * &intake, int &intakesize,Cal * database, int databasesize)
 {
 	string nameToFind;
@@ -192,7 +191,7 @@ void addFoodToIntake(Cal * &intake, int &intakesize,Cal * database, int database
 		saveDailyIntake(intake,intakesize);//adding to the intakefile
 	}	
 }
-*/
+
 
 void printList(Cal * m, int size)
 {
@@ -212,9 +211,6 @@ double countCal(Cal* m, int size)
 	}
 	return total;
 }
-
-
-
 
 int main()
 {	

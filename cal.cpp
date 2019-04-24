@@ -122,10 +122,20 @@ void addFood(Cal * &foodItems, int &size, string name)
 	cout << "\nEnter the number of calories the food contains: ";
 	cin >> cal;
 	
+	while(atof(cal.c_str()) < 0 || atof(cal.c_str()) > 1000)
+	{
+		cout << "\nERROR!, Please enter a valid number" << endl;
+		if(atof(cal.c_str()) < 0)
+			cout << "Enter calories (more than 0): ";
+		else
+			cout << "Enter calories (less than 1000): ";
+		cin >> cal;
+	}
+	
 	//asking for confirmation of this input now!
 	
 	cout << "\n" << name << "\t" << cal << endl;
-	cout << "Are you happy with his input? (Y/N) ";
+	cout << "Are you happy with his input? (Y/N) " << endl;
 	char charDec;
 	cin >> charDec;//taking a char and will convert to bool then
 	
@@ -397,32 +407,93 @@ double addingTotalIntake(Cal * intake, int size)
 	return total;
 }
 
-void updateDailyIntake(Cal *&intake, int size)
+void updateDailyIntake(Cal *&intake, int size, Cal * database, int databaseSize)
 {
-	for(int i = 0; i < size; i++)
+	for(int i = 1; i < size; i++)
 	{
-		cout << "[" << i << "] " << intake[i].food << intake[i].cal; 
+		cout << "[" << i << "] " << intake[i].food << "\t" <<intake[i].cal << endl; 
 	}
 	
 	int dec;
 	cout << "Choose the number of item you want to edit: ";
-	
+	cin >> dec;
 	while(dec < 0 || dec >= size)
 	{
 		cout << "Enter a valid number: ";
 		cin >> dec;
 	}
 	
-	string foodname;
+	string foodname; string cal;
 	cout <<"Enter the food you want to replace it with: ";
 	cin >> foodname;
 	
-	int index = search(intake, size, foodname);
+	int lengthOfName = foodname.length();
 	
-	
+	while(lengthOfName < 2)
+	{
+		cout << "\nERROR!, Please enter a valid name" << endl;
+		cout << "Enter a name (more than 1 letter): ";
+		cin >> foodname;
+		lengthOfName = foodname.length();
+	}
 
+	transform(foodname.begin(),foodname.end(),foodname.begin(),::toupper);
 	
+	int index = search(database, databaseSize, foodname);
+	if(index != -1)
+	{	
+		cout << "\n" << database[index].food << "\t" << database[index].cal << endl;
+		cout << "Are you happy with his input? (Y/N) ";
+		char charDec;
+		cin >> charDec;//taking a char and will convert to bool then
+		
+		while(charDec != 'y' && charDec != 'Y' && charDec != 'n' && charDec != 'N' )
+		{
+			cout << "\nPlease enter a valid input (Y/N): ";
+			cin >> charDec;
+		}
+		
+		bool decision = false;
+		
+		if(charDec == 'y' || charDec == 'Y')
+		{	decision = true;
+		}
+		
+		if(decision)
+		{
+			cout << "The list has been updated\n" << endl;
+			intake[dec].food = database[index].food;
+			intake[dec].cal = database[index].cal;
+			saveDailyIntake(intake,size);
+		}
+		else
+		{
+			cout << "\nInput again" << endl;
+			updateDailyIntake(intake, size, database, databaseSize);
+		}		
+	}
+	else
+	{
+		cout << "Enter the number of calories " << foodname << " contains: ";
+		cin >> cal;
+		
+		while(atof(cal.c_str()) < 0 || atof(cal.c_str()) > 1000)
+		{
+			cout << "\nERROR!, Please enter a valid number" << endl;
+			if(atof(cal.c_str()) < 0)
+				cout << "Enter calories (more than 0): ";
+			else
+				cout << "Enter calories (less than 1000): ";
+			cin >> cal;
+		}
+			
+		intake[dec].food = foodname;
+		intake[dec].cal = cal;
+		saveDailyIntake(intake,size);
+		cout << "The list has been updated\n" << endl;
 	
+	}
+		
 }
 void resetIntake(Cal * &intake, int &size )
 {
@@ -439,6 +510,118 @@ void resetIntake(Cal * &intake, int &size )
 	saveDailyIntake(intake,size);
 }
 
+void updatePersonInfo(Person x)
+{
+	bool continues = true; // this is for exiting the do loop
+	
+	do{
+		cout << "\n";		
+		cout << "[ 1 ]  Change name" << endl;
+		cout << "[ 2 ]  Change weight" << endl;
+		cout << "[ 3 ]  Change height" << endl;
+		cout << "[ 4 ]  Change age" << endl;
+		cout << "[ 5 ]  Change gender" << endl;
+		cout << "[ 6 ]  To quit" << endl;
+		
+		cout << "\n\t\t\t\t Enter one number for your option:  ";
+		char choice;
+		cin >> choice;
+		
+		switch(choice)
+		{
+			case '1':
+			{
+				string name; cout << "Enter the name: "; cin >> name;
+				int lengthOfName = name.length();
+	
+				while(lengthOfName < 2)
+				{
+					cout << "\nERROR!, Please enter a valid name" << endl;
+					cout << "Enter a name (more than 1 letter): ";
+					cin >> name;
+					lengthOfName = name.length();
+				}
+				
+				x.name = name;
+				saveMemberInfo(x);
+				return;
+			}
+			case '2':
+			{
+				double weight; cout << "Enter the weight: "; cin >> weight;
+				
+				while(weight < 40 || weight > 400)
+				{
+					cout << "\nERROR!, Please enter a valid weight" << endl;
+					cout << "Enter weight (30 < weight < 500): ";
+					cin >> weight;
+				}
+				
+				x.weight = weight;
+				saveMemberInfo(x);
+
+				return;
+			}
+			case '3':
+			{
+				double height; cout << "Enter the height: "; cin >> height;
+				
+				while(height < 100 || height > 300)
+				{
+					cout << "\nERROR!, Please enter a valid height" << endl;
+					cout << "Enter height (100 < height < 300 in cm): ";
+					cin >> height;
+				}
+				
+				x.height = height;
+				saveMemberInfo(x);
+
+			
+				return;
+			}
+			case '4':
+			{
+				int age; cout << "Enter the age: "; cin >> age;
+				
+				while(age < 10 || age > 80)
+				{
+					cout << "\nERROR!, Please enter a valid age" << endl;
+					cout << "Enter age (10 < age < 80): ";
+					cin >> age;
+				}
+				
+				x.age = age;
+				saveMemberInfo(x);
+
+				return;
+			}
+			case '5':
+			{
+				char genderChar; cout << "Enter the gender: "; cin >> genderChar;
+				
+				while(genderChar != 'm' && genderChar != 'f' && genderChar != 'M' && genderChar != 'F')
+				{
+					cout << "\nERROR!, Please enter a valid gender" << endl;
+					cout << "Enter gender (M or F): ";
+					cin >> genderChar;
+				}
+				bool gender = true;
+				if (genderChar == 'f' || genderChar == 'F')
+					gender = false;
+				
+				x.gender = gender;
+				return;
+			}
+			default:
+			{
+				cout << "Invalid choice.";
+				break;
+			}
+			
+		}
+	}while(continues);
+}
+
 int main()
 {
 	int numberOfFoodItems = countItems();
@@ -447,8 +630,10 @@ int main()
 	int counterIntake = countDailyIntakeFile();
 	Cal * dailyIntake = new Cal [counterIntake];//array will contain the name and calories
 	
-	
-//	loadMember(p);
+	Person x;
+	loadMemberInfo(x);
+	double dailyReq = Calculator(x);
+	cout << "You should aim to reach " << dailyReq << " calories everyday!" << endl; 
 	loadDailyIntake(dailyIntake);			
 	loadCalDatabase(foodItems);
 	
@@ -459,6 +644,8 @@ int main()
 		cout << "[ A ]  To add meals to your daily intake" << endl;
 		cout << "[ L ]  List today's intake" << endl;
 		cout << "[ P ]  Print today's total calorie intake" << endl;
+		cout << "[ U ]  Update todays intake" << endl;
+		cout << "[ X ]  Update your information" << endl;
 		cout << "[ R ]  Reset today's daily intake" << endl;
 		cout << "[ Q ]  To quit" << endl;
 		
@@ -486,13 +673,29 @@ int main()
 			}
 			case 'p':
 			{
-				double x = addingTotalIntake(dailyIntake, counterIntake);
-				cout << "Your total calories are: " << x << endl;
+				double m = addingTotalIntake(dailyIntake, counterIntake);
+				cout << "Your total calories are: " << m << endl;
+				if(dailyReq - m >= 0)
+					cout << "You have " << dailyReq - m << " left for the day" << endl;
+				else
+				{
+					cout << "WARNING, you have exceeded your requirement for the day!";
+				}
 				break;
 			}
 			case 'r':
 			{
 				resetIntake(dailyIntake, counterIntake);
+				break;
+			}
+			case 'u':
+			{
+				updateDailyIntake(dailyIntake, counterIntake, foodItems, numberOfFoodItems);
+				break;
+			}
+			case 'x':
+			{
+				updatePersonInfo(x);
 				break;
 			}
 			case 'q':

@@ -177,7 +177,30 @@ int search(Cal * m, int size, string name)
 	for(int i = 0; i < size; i++)
 	{
 		if(m[i].food.find(name)!=-1)
-			return i;
+		{
+			int x = m[i].food.length();
+			string c="";
+			for (int j=0;j<x;j++)	
+			{
+				if(m[i].food[j]==',')
+				{//if it is anything that isnt a number or an alphabet then it completes the word and checks if that c==word
+					if(c==name)
+					{				
+						return i;				
+					}
+					c="";	
+				}
+				else				
+				{
+					c+=m[i].food[j];//if the character of the line is alphabet or number then it adds it to the string
+				}				
+			}
+			if(c==name)
+			{
+				return i;
+			}
+		}
+	
 	}
 	return -1;
 }
@@ -369,7 +392,7 @@ double addingTotalIntake(Cal * intake, int size)
 	}
 	for(int i = 1; i < size; i++)
 	{
-		total += stod( intake[i].cal);
+		total += atof( intake[i].cal.c_str());
 	}
 	return total;
 }
@@ -401,6 +424,20 @@ void updateDailyIntake(Cal *&intake, int size)
 	
 	
 }
+void resetIntake(Cal * &intake, int &size )
+{
+	size=1;
+	Cal * intakeNew = new Cal [size];//always going to add only 1 element so +1
+	
+	for(int i = 0; i < size; i++)
+	{
+		intakeNew[i] = intake[i];
+	}
+	
+	delete [] intake;
+	intake = intakeNew;
+	saveDailyIntake(intake,size);
+}
 
 int main()
 {
@@ -422,6 +459,7 @@ int main()
 		cout << "[ A ]  To add meals to your daily intake" << endl;
 		cout << "[ L ]  List today's intake" << endl;
 		cout << "[ P ]  Print today's total calorie intake" << endl;
+		cout << "[ R ]  Reset today's daily intake" << endl;
 		cout << "[ Q ]  To quit" << endl;
 		
 		cout << "\n\t\t\t\t Enter one letter for your option:  ";
@@ -450,6 +488,11 @@ int main()
 			{
 				double x = addingTotalIntake(dailyIntake, counterIntake);
 				cout << "Your total calories are: " << x << endl;
+				break;
+			}
+			case 'r':
+			{
+				resetIntake(dailyIntake, counterIntake);
 				break;
 			}
 			case 'q':

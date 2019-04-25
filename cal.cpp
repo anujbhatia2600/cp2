@@ -550,7 +550,7 @@ void updatePersonInfo(Person x)
 			{
 				double weight; cout << "Enter the weight: "; cin >> weight;
 				
-				while(weight < 40 || weight > 400)
+				while(weight < 30 || weight > 500)
 				{
 					cout << "\nERROR!, Please enter a valid weight" << endl;
 					cout << "Enter weight (30 < weight < 500): ";

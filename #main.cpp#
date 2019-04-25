@@ -1,49 +1,47 @@
+#include "cal.h"
 #include <iostream>
 #include <string>
 #include <fstream>
 #include <algorithm>
 #include <cctype>
 #include <iomanip>
-#include "cal.h"
+
 using namespace std;
 
 int main()
 {
 	int numberOfFoodItems = countItems();
 	Cal * foodItems = new Cal [numberOfFoodItems];//array will contain the name and calories
-
+	
 	int counterIntake = countDailyIntakeFile();
 	Cal * dailyIntake = new Cal [counterIntake];//array will contain the name and calories
-
+	
 	Person x;
 	loadMemberInfo(x);
 	double dailyReq = Calculator(x);
-	cout << "You should aim to reach " << dailyReq << " calories everyday!" << endl;
-	loadDailyIntake(dailyIntake);
+	cout << "You should aim to reach " << dailyReq << " calories everyday!" << endl; 
+	loadDailyIntake(dailyIntake);			
 	loadCalDatabase(foodItems);
-
+	
 	bool continues = true; // this is for exiting the do loop
-
+	
 	do{
-		cout << "\n";
+		cout << "\n";		
 		cout << "[ A ]  To add meals to your daily intake" << endl;
 		cout << "[ D ]  Delete an item from todays intake" << endl;
 		cout << "[ L ]  List today's intake" << endl;
-		cout << "[ I ]  Print my information" << endl;
 		cout << "[ P ]  Print today's total calorie intake" << endl;
 		cout << "[ U ]  Update todays intake" << endl;
 		cout << "[ X ]  Update your information" << endl;
 		cout << "[ R ]  Reset today's daily intake" << endl;
 		cout << "[ Q ]  To quit" << endl;
-
+		
 		cout << "\n\t\t\t\t Enter one letter for your option:  ";
 		char choice;
 		cin >> choice;//convert the char into lower case!
-
-		if(choice >= 'A' && choice <= 'Z')
-			choice += 32;
 		//
-
+		//
+		
 		switch(choice)
 		{
 			case 'a':
@@ -51,7 +49,7 @@ int main()
 				string nameToFind;
 				cout << "Enter food name: ";
 				cin >> nameToFind;
-
+				
 				addFoodToIntake(dailyIntake, counterIntake, foodItems, numberOfFoodItems,nameToFind);
 				break; //case 1 break
 			}
@@ -64,18 +62,6 @@ int main()
 			{
 				printList(dailyIntake,counterIntake);
 				break; //case 2 break
-			}
-			case 'i':
-			{
-				cout << "Name: "<< x.name << endl;
-				cout << "Age: "<< x.age << " years"<<  endl;
-				cout << "Weight: "<< x.weight << " kgs" << endl;
-				cout << "Height: "<< x.height << " cm" << endl;
-				string g = "Male";
-				if (x.gender == false)
-					g = "Female";
-				cout << "Gender: "<< g << "\n"<< endl;
-				break;
 			}
 			case 'p':
 			{

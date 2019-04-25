@@ -1,10 +1,5 @@
 #include "cal.h"
-#include <iostream>
-#include <string>
-#include <fstream>
-#include <algorithm>
-#include <cctype>
-#include <iomanip>
+
 
 string memeberInfoFileName = "Member.txt";
 string intakeFileName = "Intake.txt";
@@ -17,11 +12,11 @@ int countDailyIntakeFile()
 	{
 		return 0;
 	}
-	
+
 	string temp; int i = 0;
-	
+
 	while (getline(fin,temp))
-	{	
+	{
 		i++;
 	}
 	fin.close();
@@ -32,11 +27,11 @@ int countDailyIntakeFile()
 int countItems()
 {
 	ifstream fin("CalFile.txt");
-	
+
 	string temp;
 	int i = 0;
 	while (getline(fin, temp, ';'))
-	{	
+	{
 		i++;
 	}
 	fin.close();
@@ -44,43 +39,43 @@ int countItems()
 }
 
 void loadCalDatabase(Cal * &foodItems)//loading from the main database
-{	
+{
 	ifstream fin("CalFile.txt");
-	
+
 	if(fin.fail())
 	{
 		cout << "Error in opening file" << endl;
 		exit(1);
 	}
 
-	
+
 	string temp; string calFood;
 	int i = 0;
 	while (getline(fin, temp, ';'))
-	{	
+	{
 		getline(fin, calFood);
-		
+
 		foodItems[i].food = temp;
 		foodItems[i].cal = calFood;//converting string to double is must as its calories
-		
+
 		i++;
 	}
 	fin.close();
-	
+
 
 }
 
 void growDatabase(Cal * &intake, int & inSize)
 {
 	Cal * intakeNew = new Cal [inSize +1];//always going to add only 1 element so +1
-	
+
 	for(int i = 0; i < inSize; i++)
 	{
 		intakeNew[i] = intake[i];
 	}
-	
+
 	delete [] intake;
-	
+
 	intake = intakeNew;
 	inSize += 1;//incrementing the size
 }
@@ -94,7 +89,7 @@ void saveDatabase(Cal * foodItems, int num)//saving the updated list to the data
 		cout << "Error in opening the file!" << endl;
 		exit(1);
 	}
-	
+
 	for(int i = 0; i < num; i++)
 	{
 		if(i != num-1)
@@ -102,14 +97,14 @@ void saveDatabase(Cal * foodItems, int num)//saving the updated list to the data
 		else
 			fout << foodItems[i].food << ";" << foodItems[i].cal;
 	}
-	
+
 }
 
 void addFood(Cal * &foodItems, int &size, string name)
 {
 
 	int lengthOfName = name.length();
-	
+
 	while(lengthOfName < 2)
 	{
 		cout << "\nERROR!, Please enter a valid name" << endl;
@@ -117,11 +112,11 @@ void addFood(Cal * &foodItems, int &size, string name)
 		cin >> name;
 		lengthOfName = name.length();
 	}
-	
+
 	string cal;
 	cout << "\nEnter the number of calories the food contains: ";
 	cin >> cal;
-	
+
 	while(atof(cal.c_str()) < 0 || atof(cal.c_str()) > 1000)
 	{
 		cout << "\nERROR!, Please enter a valid number" << endl;
@@ -131,37 +126,37 @@ void addFood(Cal * &foodItems, int &size, string name)
 			cout << "Enter calories (less than 1000): ";
 		cin >> cal;
 	}
-	
+
 	//asking for confirmation of this input now!
-	
+
 	cout << "\n" << name << "\t" << cal << endl;
 	cout << "Are you happy with his input? (Y/N) " << endl;
 	char charDec;
 	cin >> charDec;//taking a char and will convert to bool then
-	
+
 	while(charDec != 'y' && charDec != 'Y' && charDec != 'n' && charDec != 'N' )
 	{
 		cout << "\nPlease enter a valid input (Y/N): ";
 		cin >> charDec;
 	}
-	
+
 	bool decision = false;
-	
+
 	if(charDec == 'y' || charDec == 'Y')
 	{	decision = true;
 	}
-	
+
 	if(decision)
 	{
 		//number of elements is the case here
 		growDatabase(foodItems, size);//size will get updated
-	
+
 		foodItems[size-1].food = name;
-		foodItems[size-1].cal = cal;	
+		foodItems[size-1].cal = cal;
 		//write a code which will add this added food item to the persons daily intake list*
 		transform(foodItems[size-1].food.begin(),foodItems[size-1].food.end(),foodItems[size-1].food.begin(),::toupper);
 		saveDatabase(foodItems, size);
-		
+
 		cout << "You've entered: \n" << name << "\t" << cal <<endl;
 		cout << "This new entry has been saved to the main database!" << endl;
 	}
@@ -190,27 +185,27 @@ int search(Cal * m, int size, string name)
 		{
 			int x = m[i].food.length();
 			string c="";
-			for (int j=0;j<x;j++)	
+			for (int j=0;j<x;j++)
 			{
 				if(m[i].food[j]==',')
 				{//if it is anything that isnt a number or an alphabet then it completes the word and checks if that c==word
 					if(c==name)
-					{				
-						return i;				
+					{
+						return i;
 					}
-					c="";	
+					c="";
 				}
-				else				
+				else
 				{
 					c+=m[i].food[j];//if the character of the line is alphabet or number then it adds it to the string
-				}				
+				}
 			}
 			if(c==name)
 			{
 				return i;
 			}
 		}
-	
+
 	}
 	return -1;
 }
@@ -219,9 +214,9 @@ void deleteFood(Cal * &m, int &size)
 {
 	for(int i = 1; i < size; i++)
 	{
-		cout << "[" << i << "] " << m[i].food << "\t" <<m[i].cal << endl; 
+		cout << "[" << i << "] " << m[i].food << "\t" <<m[i].cal << endl;
 	}
-	
+
 	int dec;
 	cout << "Choose the number of item you want to delete: ";
 	cin >> dec;
@@ -229,7 +224,7 @@ void deleteFood(Cal * &m, int &size)
 	{
 		cout << "Enter a valid number: ";
 		cin >> dec;
-	}		
+	}
 	Cal * d = new Cal[size-1];
 	int i=0;
 	while(i!=size-1){
@@ -249,14 +244,14 @@ void deleteFood(Cal * &m, int &size)
 	m=d;
 	saveDailyIntake(m,size);
 	cout << "The item has been deleted\n" << endl;
-		
+
 }
 
 
 void loadMemberInfo(Person & x)
 {
 	ifstream fin(memeberInfoFileName.c_str());
-	
+
 	if(fin.fail())
 	{
 		cout <<"File doesn't exist" <<endl;
@@ -284,7 +279,7 @@ void loadMemberInfo(Person & x)
 			genderBool = false;
 		}
 		cout<<endl;
-		
+
 		x.name = name;
 		x.height = height;
 		x.age = age;
@@ -303,7 +298,7 @@ void loadMemberInfo(Person & x)
 			x.gender = gender;
 		}
 	}
-	
+
 	fin.close();
 }
 
@@ -316,7 +311,7 @@ int Calculator(Person x)
 	}
 	else
 	{
-		cal=10*(x.weight)+6.25*(x.height)-5*(x.age)+5;	
+		cal=10*(x.weight)+6.25*(x.height)-5*(x.age)+5;
 	}
 	return (int)cal;
 }
@@ -330,12 +325,12 @@ void loadDailyIntake(Cal * &intake)
 		cout << "File doesn't exist" << endl;
 		exit(1);
 	}
-	
+
 	string name; string calFood; int i = 0;
 	while (getline(fin, name, ';'))
-	{	
+	{
 		getline(fin, calFood);
-	
+
 		intake[i].food = name;
 		intake[i].cal = calFood;//converting string to double is must as its calories
 		i++;
@@ -347,13 +342,13 @@ void loadDailyIntake(Cal * &intake)
 void saveMemberInfo(Person x)
 {
 	ofstream fout(memeberInfoFileName.c_str());
-	
+
 	fout << x.name << endl;
 	fout << x.height << endl;
 	fout << x.age << endl;
 	fout << x.weight << endl;
 	fout << x.gender << endl;
-	
+
 	fout.close();
 }
 
@@ -366,7 +361,7 @@ void saveDailyIntake(Cal * intake, int num)
 		cout << "Error in opening the file!" << endl;
 		exit(1);
 	}
-	
+
 	for(int i = 0; i < num; i++)
 	{
 		if(i !=  num-1)
@@ -374,7 +369,7 @@ void saveDailyIntake(Cal * intake, int num)
 		else
 			fout << intake[i].food << ";" << intake[i].cal;
 	}
-	
+
 	fout.close();
 }
 
@@ -382,25 +377,25 @@ void saveDailyIntake(Cal * intake, int num)
 void growIntakeDatabase(Cal * &intake, int & inSize)
 {
 	Cal * intakeNew = new Cal [inSize +1];//always going to add only 1 element so +1
-	
+
 	for(int i = 0; i < inSize; i++)
 	{
 		intakeNew[i] = intake[i];
 	}
-	
+
 	delete [] intake;
-	
+
 	intake = intakeNew;
 	inSize += 1;//incrementing the size
 }
 
 void addFoodToIntake(Cal * &intake, int &intakesize,Cal * database, int databasesize, string nameToFind)
-{	
+{
 	transform(nameToFind.begin(),nameToFind.end(),nameToFind.begin(),::toupper);
-	
+
 	int index=search(database,databasesize,nameToFind);
 	growIntakeDatabase(intake, intakesize);
-		
+
 	if(index!=-1)//write the argument
 	{
 		intake[intakesize-1].food = database[index].food ;//we need to load the main database array
@@ -421,7 +416,7 @@ void addFoodToIntake(Cal * &intake, int &intakesize,Cal * database, int database
 double addingTotalIntake(Cal * intake, int size)
 {
 	double total;
-	
+
 	if(size==1)
 	{
 		return 0;
@@ -435,11 +430,17 @@ double addingTotalIntake(Cal * intake, int size)
 
 void updateDailyIntake(Cal *&intake, int size, Cal * database, int databaseSize)
 {
+
+	if(size == 1)
+	{
+		cout << "Your list is empty and no items are available to be updated\n" << endl;
+		return;
+	}
 	for(int i = 1; i < size; i++)
 	{
-		cout << "[" << i << "] " << intake[i].food << "\t" <<intake[i].cal << endl; 
+		cout << "[" << i << "] " << intake[i].food << "\t" <<intake[i].cal << endl;
 	}
-	
+
 	int dec;
 	cout << "Choose the number of item you want to edit: ";
 	cin >> dec;
@@ -448,13 +449,13 @@ void updateDailyIntake(Cal *&intake, int size, Cal * database, int databaseSize)
 		cout << "Enter a valid number: ";
 		cin >> dec;
 	}
-	
+
 	string foodname; string cal;
 	cout <<"Enter the food you want to replace it with: ";
 	cin >> foodname;
-	
+
 	int lengthOfName = foodname.length();
-	
+
 	while(lengthOfName < 2)
 	{
 		cout << "\nERROR!, Please enter a valid name" << endl;
@@ -464,27 +465,27 @@ void updateDailyIntake(Cal *&intake, int size, Cal * database, int databaseSize)
 	}
 
 	transform(foodname.begin(),foodname.end(),foodname.begin(),::toupper);
-	
+
 	int index = search(database, databaseSize, foodname);
 	if(index != -1)
-	{	
+	{
 		cout << "\n" << database[index].food << "\t" << database[index].cal << endl;
 		cout << "Are you happy with his input? (Y/N) ";
 		char charDec;
 		cin >> charDec;//taking a char and will convert to bool then
-		
+
 		while(charDec != 'y' && charDec != 'Y' && charDec != 'n' && charDec != 'N' )
 		{
 			cout << "\nPlease enter a valid input (Y/N): ";
 			cin >> charDec;
 		}
-		
+
 		bool decision = false;
-		
+
 		if(charDec == 'y' || charDec == 'Y')
 		{	decision = true;
 		}
-		
+
 		if(decision)
 		{
 			cout << "The list has been updated\n" << endl;
@@ -496,13 +497,13 @@ void updateDailyIntake(Cal *&intake, int size, Cal * database, int databaseSize)
 		{
 			cout << "\nInput again" << endl;
 			updateDailyIntake(intake, size, database, databaseSize);
-		}		
+		}
 	}
 	else
 	{
 		cout << "Enter the number of calories " << foodname << " contains: ";
 		cin >> cal;
-		
+
 		while(atof(cal.c_str()) < 0 || atof(cal.c_str()) > 1000)
 		{
 			cout << "\nERROR!, Please enter a valid number" << endl;
@@ -512,25 +513,25 @@ void updateDailyIntake(Cal *&intake, int size, Cal * database, int databaseSize)
 				cout << "Enter calories (less than 1000): ";
 			cin >> cal;
 		}
-			
+
 		intake[dec].food = foodname;
 		intake[dec].cal = cal;
 		saveDailyIntake(intake,size);
 		cout << "The list has been updated\n" << endl;
-	
+
 	}
-		
+
 }
 void resetIntake(Cal * &intake, int &size )
 {
 	size=1;
 	Cal * intakeNew = new Cal [size];//always going to add only 1 element so +1
-	
+
 	for(int i = 0; i < size; i++)
 	{
 		intakeNew[i] = intake[i];
 	}
-	
+
 	delete [] intake;
 	intake = intakeNew;
 	saveDailyIntake(intake,size);
@@ -539,27 +540,27 @@ void resetIntake(Cal * &intake, int &size )
 void updatePersonInfo(Person &x)
 {
 	bool continues = true; // this is for exiting the do loop
-	
+
 	do{
-		cout << "\n";		
+		cout << "\n";
 		cout << "[ 1 ]  Change name" << endl;
 		cout << "[ 2 ]  Change weight" << endl;
 		cout << "[ 3 ]  Change height" << endl;
 		cout << "[ 4 ]  Change age" << endl;
 		cout << "[ 5 ]  Change gender" << endl;
 		cout << "[ 6 ]  To quit" << endl;
-		
+
 		cout << "\n\t\t\t\t Enter one number for your option:  ";
 		char choice;
 		cin >> choice;
-		
+
 		switch(choice)
 		{
 			case '1':
 			{
 				string name; cout << "Enter the name: "; cin >> name;
 				int lengthOfName = name.length();
-	
+
 				while(lengthOfName < 2)
 				{
 					cout << "\nERROR!, Please enter a valid name" << endl;
@@ -567,7 +568,7 @@ void updatePersonInfo(Person &x)
 					cin >> name;
 					lengthOfName = name.length();
 				}
-				
+
 				x.name = name;
 				saveMemberInfo(x);
 				return;
@@ -575,14 +576,14 @@ void updatePersonInfo(Person &x)
 			case '2':
 			{
 				double weight; cout << "Enter the weight: "; cin >> weight;
-				
+
 				while(weight < 40 || weight > 400)
 				{
 					cout << "\nERROR!, Please enter a valid weight" << endl;
 					cout << "Enter weight (40 < weight < 400): ";
 					cin >> weight;
 				}
-				
+
 				x.weight = weight;
 				saveMemberInfo(x);
 
@@ -591,31 +592,31 @@ void updatePersonInfo(Person &x)
 			case '3':
 			{
 				double height; cout << "Enter the height: "; cin >> height;
-				
+
 				while(height < 100 || height > 300)
 				{
 					cout << "\nERROR!, Please enter a valid height" << endl;
 					cout << "Enter height (100 < height < 300 in cm): ";
 					cin >> height;
 				}
-				
+
 				x.height = height;
 				saveMemberInfo(x);
 
-			
+
 				return;
 			}
 			case '4':
 			{
 				int age; cout << "Enter the age: "; cin >> age;
-				
+
 				while(age < 10 || age > 80)
 				{
 					cout << "\nERROR!, Please enter a valid age" << endl;
 					cout << "Enter age (10 < age < 80): ";
 					cin >> age;
 				}
-				
+
 				x.age = age;
 				saveMemberInfo(x);
 
@@ -624,7 +625,7 @@ void updatePersonInfo(Person &x)
 			case '5':
 			{
 				char genderChar; cout << "Enter the gender: "; cin >> genderChar;
-				
+
 				while(genderChar != 'm' && genderChar != 'f' && genderChar != 'M' && genderChar != 'F')
 				{
 					cout << "\nERROR!, Please enter a valid gender" << endl;
@@ -634,7 +635,7 @@ void updatePersonInfo(Person &x)
 				bool gender = true;
 				if (genderChar == 'f' || genderChar == 'F')
 					gender = false;
-				
+
 				x.gender = gender;
 				return;
 			}
@@ -645,102 +646,5 @@ void updatePersonInfo(Person &x)
 			}
 		}
 	}while(continues);
-}
 
-int main()
-{
-	int numberOfFoodItems = countItems();
-	Cal * foodItems = new Cal [numberOfFoodItems];//array will contain the name and calories
-	
-	int counterIntake = countDailyIntakeFile();
-	Cal * dailyIntake = new Cal [counterIntake];//array will contain the name and calories
-	
-	Person x;
-	loadMemberInfo(x);
-	double dailyReq = Calculator(x);
-	cout << "You should aim to reach " << dailyReq << " calories everyday!" << endl; 
-	loadDailyIntake(dailyIntake);			
-	loadCalDatabase(foodItems);
-	
-	bool continues = true; // this is for exiting the do loop
-	
-	do{
-		cout << "\n";		
-		cout << "[ A ]  To add meals to your daily intake" << endl;
-		cout << "[ D ]  Delete an item from todays intake" << endl;
-		cout << "[ L ]  List today's intake" << endl;
-		cout << "[ P ]  Print today's total calorie intake" << endl;
-		cout << "[ U ]  Update todays intake" << endl;
-		cout << "[ X ]  Update your information" << endl;
-		cout << "[ R ]  Reset today's daily intake" << endl;
-		cout << "[ Q ]  To quit" << endl;
-		
-		cout << "\n\t\t\t\t Enter one letter for your option:  ";
-		char choice;
-		cin >> choice;//convert the char into lower case!
-		//
-		//
-		
-		switch(choice)
-		{
-			case 'a':
-			{
-				string nameToFind;
-				cout << "Enter food name: ";
-				cin >> nameToFind;
-				
-				addFoodToIntake(dailyIntake, counterIntake, foodItems, numberOfFoodItems,nameToFind);
-				break; //case 1 break
-			}
-			case 'd':
-			{
-				deleteFood(dailyIntake,counterIntake);
-				break;
-			}
-			case 'l':
-			{
-				printList(dailyIntake,counterIntake);
-				break; //case 2 break
-			}
-			case 'p':
-			{
-				double m = addingTotalIntake(dailyIntake, counterIntake);
-				cout << "Your total calories are: " << m << endl;
-				if(dailyReq - m >= 0)
-					cout << "You have " << dailyReq - m << " left for the day" << endl;
-				else
-				{
-					cout << "WARNING, you have exceeded your requirement for the day!";
-				}
-				break;
-			}
-			case 'r':
-			{
-				resetIntake(dailyIntake, counterIntake);
-				break;
-			}
-			case 'u':
-			{
-				updateDailyIntake(dailyIntake, counterIntake, foodItems, numberOfFoodItems);
-				break;
-			}
-			case 'x':
-			{
-				updatePersonInfo(x);
-				dailyReq = Calculator(x);//updating the dailyReq according to the change in person
-				cout << "Now you should aim to reach " << dailyReq << " calories everyday!" << endl;
-				break;
-			}
-			case 'q':
-			{
-				continues = false;
-				break;
-			}
-			default:
-			{
-				cout << "Invalid choice.";
-				break;
-			}
-		}
-	}while(continues);
 }

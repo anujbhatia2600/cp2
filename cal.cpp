@@ -214,19 +214,44 @@ int search(Cal * m, int size, string name)
 	}
 	return -1;
 }
-/*
+
 void deleteFood(Cal * &m, int &size)
 {
-	string foodToDel;
-	cin >> foodToDel;
-	
-	if(search(foodToDel)!= -1)
+	for(int i = 1; i < size; i++)
 	{
-		
-		size--;
+		cout << "[" << i << "] " << m[i].food << "\t" <<m[i].cal << endl; 
 	}
+	
+	int dec;
+	cout << "Choose the number of item you want to delete: ";
+	cin >> dec;
+	while(dec < 1 || dec >= size)
+	{
+		cout << "Enter a valid number: ";
+		cin >> dec;
+	}		
+	Cal * d = new Cal[size-1];
+	int i=0;
+	while(i!=size-1){
+		if(i==dec)
+		{
+			continue;
+		}
+		else
+		{
+			d[i].food=m[i].food;
+			d[i].cal=m[i].cal;
+			i++;
+		}
+	}
+	size=size-1;
+	delete [] m;
+	m=d;
+	saveDailyIntake(m,size);
+	cout << "The item has been deleted\n" << endl;
+		
 }
-*/
+
 
 void loadMemberInfo(Person & x)
 {
@@ -390,6 +415,7 @@ void addFoodToIntake(Cal * &intake, int &intakesize,Cal * database, int database
 		saveDailyIntake(intake,intakesize);//adding to the intakefile
 		saveDatabase(database,databasesize);
 	}
+	cout<<database[index].food<<" has been added to the daily intake\n"<<endl;
 }
 
 double addingTotalIntake(Cal * intake, int size)
@@ -510,7 +536,7 @@ void resetIntake(Cal * &intake, int &size )
 	saveDailyIntake(intake,size);
 }
 
-void updatePersonInfo(Person x)
+void updatePersonInfo(Person &x)
 {
 	bool continues = true; // this is for exiting the do loop
 	
@@ -641,6 +667,7 @@ int main()
 	do{
 		cout << "\n";		
 		cout << "[ A ]  To add meals to your daily intake" << endl;
+		cout << "[ D ]  Delete an item from todays intake" << endl;
 		cout << "[ L ]  List today's intake" << endl;
 		cout << "[ P ]  Print today's total calorie intake" << endl;
 		cout << "[ U ]  Update todays intake" << endl;
@@ -664,6 +691,11 @@ int main()
 				
 				addFoodToIntake(dailyIntake, counterIntake, foodItems, numberOfFoodItems,nameToFind);
 				break; //case 1 break
+			}
+			case 'd':
+			{
+				deleteFood(dailyIntake,counterIntake);
+				break;
 			}
 			case 'l':
 			{
@@ -695,7 +727,8 @@ int main()
 			case 'x':
 			{
 				updatePersonInfo(x);
-				dailyReq = Calculator(x)//updating the dailyReq according to the change in person
+				dailyReq = Calculator(x);//updating the dailyReq according to the change in person
+				cout << "Now you should aim to reach " << dailyReq << " calories everyday!" << endl;
 				break;
 			}
 			case 'q':

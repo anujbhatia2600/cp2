@@ -553,7 +553,7 @@ void updatePersonInfo(Person x)
 				while(weight < 40 || weight > 400)
 				{
 					cout << "\nERROR!, Please enter a valid weight" << endl;
-					cout << "Enter weight (30 < weight < 500): ";
+					cout << "Enter weight (40 < weight < 400): ";
 					cin >> weight;
 				}
 				
@@ -617,7 +617,6 @@ void updatePersonInfo(Person x)
 				cout << "Invalid choice.";
 				break;
 			}
-			
 		}
 	}while(continues);
 }
@@ -696,6 +695,7 @@ int main()
 			case 'x':
 			{
 				updatePersonInfo(x);
+				dailyReq = Calculator(x)//updating the dailyReq according to the change in person
 				break;
 			}
 			case 'q':

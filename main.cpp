@@ -10,20 +10,22 @@ using namespace std;
 int main()
 {
 	int numberOfFoodItems = countItems();
-	Cal * foodItems = new Cal [numberOfFoodItems];//array will contain the name and calories
+	Cal * foodItems = new Cal [numberOfFoodItems];//database array
 
 	int counterIntake = countDailyIntakeFile();
 	Cal * dailyIntake = new Cal [counterIntake];//array will contain the name and calories
 
-	Person x;
-	loadMemberInfo(x);
-	double dailyReq = Calculator(x);
-	cout << "You should aim to reach " << dailyReq << " calories everyday!" << endl;
+	Person x; //creating person
+	loadMemberInfo(x);//loading the person information
+	
+	double dailyReq = Calculator(x); //calculates optimum calories for the person according to its info
+	cout << "You should aim to reach " << dailyReq << " calories everyday!" << endl; //telling the person how much is there optimum cal
+	
 	loadDailyIntake(dailyIntake);
 	loadCalDatabase(foodItems);
 
 	bool continues = true; // this is for exiting the do loop
-
+	
 	do{
 		cout << "\n";
 		cout << "[ A ]  To add meals to your daily intake" << endl;
@@ -38,21 +40,20 @@ int main()
 
 		cout << "\n\t\t\t\t Enter one letter for your option:  ";
 		char choice;
-		cin >> choice;//convert the char into lower case!
+		cin >> choice;
 
 		if(choice >= 'A' && choice <= 'Z')
-			choice += 32;
-		//
-
+			choice += 32; //converting the char into lower case!
+		
 		switch(choice)
 		{
 			case 'a':
 			{
 				string nameToFind;
 				cout << "Enter food name: ";
-				cin.ignore();
+				cin.ignore(); //need this for getline to work and not escape this getline
 				getline(cin, nameToFind);
-
+				
 				addFoodToIntake(dailyIntake, counterIntake, foodItems, numberOfFoodItems, nameToFind);
 				break; 
 			}
@@ -73,7 +74,7 @@ int main()
 				cout << "Weight: "<< x.weight << " kgs" << endl;
 				cout << "Height: "<< x.height << " cm" << endl;
 				string g = "Male";
-				if (x.gender == false)
+				if (x.gender == false) //as gender is a boolean, we need this if statement
 					g = "Female";
 				cout << "Gender: "<< g << "\n"<< endl;
 				break;
@@ -84,10 +85,10 @@ int main()
 				double m = addingTotalIntake(dailyIntake, counterIntake);
 				cout << "Your total calories are: " << m << endl;
 				if(dailyReq - m >= 0)
-					cout << "You have " << dailyReq - m << " left for the day" << endl;
+					cout << "You have " << dailyReq - m << " left for the day" << endl; //telling the user how many calories are left for the day
 				else
 				{
-					cout << "WARNING, you have exceeded your requirement for the day!";
+					cout << "WARNING, you have exceeded your requirement for the day!"; //warning!
 				}
 				break;
 			}
@@ -116,7 +117,7 @@ int main()
 			}
 			default:
 			{
-				cout << "Invalid choice.";
+				cout << "Invalid choice."; //if they input something other than the required input, it is considered invalid
 				break;
 			}
 		}

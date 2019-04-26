@@ -9,7 +9,7 @@
 
 
 using namespace std;
-struct Person
+struct Person //structure of a person
 {
 	string name;
     double height;
@@ -17,12 +17,14 @@ struct Person
     double weight;
     bool gender; //male is true, and female is false
 };
-struct Cal
+
+struct Cal //structure of a calorie
 {
 	string food;
-	string cal;
+	string cal; //made this string as its easy to use, will convert to double when we need to add!
 };
 
+//listing all function prototypes
 int countDailyIntakeFile();
 int countItems();
 void loadCalDatabase(Cal * &);

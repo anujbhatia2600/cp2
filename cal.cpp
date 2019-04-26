@@ -74,7 +74,7 @@ void growDatabase(Cal * &intake, int & inSize)
 		intakeNew[i] = intake[i];
 	}
 
-	delete [] intake;
+	delete[] intake;
 
 	intake = intakeNew;
 	inSize += 1;//incrementing the size
@@ -224,19 +224,22 @@ void deleteFood(Cal * &m, int &size)
 	{
 		cout << "Enter a valid number: ";
 		cin >> dec;
-	}
+	}	
 	Cal * d = new Cal[size-1];
-	int i=0;
-	while(i!=size-1){
-		if(i==dec)
+	int i=0,j=0;
+	while(j!=size){
+		if(j==dec)
 		{
+			j++;			
 			continue;
 		}
 		else
 		{
-			d[i].food=m[i].food;
-			d[i].cal=m[i].cal;
+			d[i].food=m[j].food;
+			d[i].cal=m[j].cal;
+			cout<<i<<endl;
 			i++;
+			j++;
 		}
 	}
 	size=size-1;

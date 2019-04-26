@@ -5,8 +5,10 @@ using namespace std;
 
 int main() 
 {
-	string x = "2.14n";
-	double m = stod(x);
-	cout << stod(x)+1;
+	string x;
+	
+	getline(cin, x);
+	
+	cout << x;
 } 
 

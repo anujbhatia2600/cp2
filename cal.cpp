@@ -1,4 +1,5 @@
 #include "cal.h"
+#include <string>
 
 
 string memeberInfoFileName = "Member.txt";
@@ -83,7 +84,7 @@ void growDatabase(Cal * &intake, int & inSize)
 
 void saveDatabase(Cal * foodItems, int num)//saving the updated list to the database
 {
-	ofstream fout ("CalFile.txt");
+	ofstream fout("CalFile.txt");
 	if(fout.fail())
 	{
 		cout << "Error in opening the file!" << endl;
@@ -97,7 +98,7 @@ void saveDatabase(Cal * foodItems, int num)//saving the updated list to the data
 		else
 			fout << foodItems[i].food << ";" << foodItems[i].cal;
 	}
-
+	fout.close();
 }
 
 void addFood(Cal * &foodItems, int &size, string name)
@@ -130,7 +131,7 @@ void addFood(Cal * &foodItems, int &size, string name)
 	//asking for confirmation of this input now!
 
 	cout << "\n" << name << "\t" << cal << endl;
-	cout << "Are you happy with his input? (Y/N) " << endl;
+	cout << "Are you happy with his input? (Y/N): ";
 	char charDec;
 	cin >> charDec;//taking a char and will convert to bool then
 
@@ -150,7 +151,7 @@ void addFood(Cal * &foodItems, int &size, string name)
 	{
 		//number of elements is the case here
 		growDatabase(foodItems, size);//size will get updated
-
+		
 		foodItems[size-1].food = name;
 		foodItems[size-1].cal = cal;
 		//write a code which will add this added food item to the persons daily intake list*
@@ -237,7 +238,6 @@ void deleteFood(Cal * &m, int &size)//delete function that i want
 		{
 			d[i].food=m[j].food;
 			d[i].cal=m[j].cal;
-			cout<<i<<endl;
 			i++;
 			j++;
 		}
@@ -247,7 +247,6 @@ void deleteFood(Cal * &m, int &size)//delete function that i want
 	m=d;
 	saveDailyIntake(m,size);
 	cout << "The item has been deleted\n" << endl;
-
 }
 
 
@@ -399,7 +398,7 @@ void addFoodToIntake(Cal * &intake, int &intakesize,Cal * database, int database
 	int index=search(database,databasesize,nameToFind);
 	growIntakeDatabase(intake, intakesize);
 
-	if(index!=-1)//write the argument
+	if(index!=-1)
 	{
 		intake[intakesize-1].food = database[index].food ;//we need to load the main database array
 		intake[intakesize-1].cal =database[index].cal ;//how should we access the main database array?
@@ -410,10 +409,12 @@ void addFoodToIntake(Cal * &intake, int &intakesize,Cal * database, int database
 		addFood(database, databasesize, nameToFind);
 		intake[intakesize-1].food = database[databasesize-1].food ;//we need to load the main database array
 		intake[intakesize-1].cal =database[databasesize-1].cal ;//how should we access the main database array?
+		
 		saveDailyIntake(intake,intakesize);//adding to the intakefile
 		saveDatabase(database,databasesize);
 	}
-	cout<<database[index].food<<" has been added to the daily intake\n"<<endl;
+	
+	cout<<database[databasesize-1].food<<" has been added to the daily intake\n"<<endl;
 }
 
 double addingTotalIntake(Cal * intake, int size)
@@ -649,5 +650,120 @@ void updatePersonInfo(Person &x)
 			}
 		}
 	}while(continues);
+}
 
+int main()
+{
+	int numberOfFoodItems = countItems();
+	Cal * foodItems = new Cal [numberOfFoodItems];//array will contain the name and calories
+
+	int counterIntake = countDailyIntakeFile();
+	Cal * dailyIntake = new Cal [counterIntake];//array will contain the name and calories
+
+	Person x;
+	loadMemberInfo(x);
+	double dailyReq = Calculator(x);
+	cout << "You should aim to reach " << dailyReq << " calories everyday!" << endl;
+	loadDailyIntake(dailyIntake);
+	loadCalDatabase(foodItems);
+
+	bool continues = true; // this is for exiting the do loop
+
+	do{
+		cout << "\n";
+		cout << "[ A ]  To add meals to your daily intake" << endl;
+		cout << "[ D ]  Delete an item from todays intake" << endl;
+		cout << "[ L ]  List today's intake" << endl;
+		cout << "[ I ]  Print my information" << endl;
+		cout << "[ P ]  Print today's total calorie intake" << endl;
+		cout << "[ U ]  Update todays intake" << endl;
+		cout << "[ X ]  Update your information" << endl;
+		cout << "[ R ]  Reset today's daily intake" << endl;
+		cout << "[ Q ]  To quit" << endl;
+
+		cout << "\n\t\t\t\t Enter one letter for your option:  ";
+		char choice;
+		cin >> choice;//convert the char into lower case!
+
+		if(choice >= 'A' && choice <= 'Z')
+			choice += 32;
+		//
+
+		switch(choice)
+		{
+			case 'a':
+			{
+				string nameToFind;
+				cout << "Enter food name: ";
+				cin.ignore();
+				getline(cin, nameToFind);
+
+				addFoodToIntake(dailyIntake, counterIntake, foodItems, numberOfFoodItems, nameToFind);
+				break; 
+			}
+			case 'd':
+			{
+				deleteFood(dailyIntake,counterIntake);
+				break;
+			}
+			case 'l':
+			{
+				printList(dailyIntake,counterIntake);
+				break;
+			}
+			case 'i':
+			{
+				cout << "Name: "<< x.name << endl;
+				cout << "Age: "<< x.age << " years"<<  endl;
+				cout << "Weight: "<< x.weight << " kgs" << endl;
+				cout << "Height: "<< x.height << " cm" << endl;
+				string g = "Male";
+				if (x.gender == false)
+					g = "Female";
+				cout << "Gender: "<< g << "\n"<< endl;
+				break;
+			}
+			case 'p':
+			{
+				dailyReq=Calculator(x);
+				double m = addingTotalIntake(dailyIntake, counterIntake);
+				cout << "Your total calories are: " << m << endl;
+				if(dailyReq - m >= 0)
+					cout << "You have " << dailyReq - m << " left for the day" << endl;
+				else
+				{
+					cout << "WARNING, you have exceeded your requirement for the day!";
+				}
+				break;
+			}
+			case 'r':
+			{
+				resetIntake(dailyIntake, counterIntake);
+				cout << "Your list is empty now!\n" << endl;
+				break;
+			}
+			case 'u':
+			{
+				updateDailyIntake(dailyIntake, counterIntake, foodItems, numberOfFoodItems);
+				break;
+			}
+			case 'x':
+			{
+				updatePersonInfo(x);
+				dailyReq = Calculator(x);//updating the dailyReq according to the change in person
+				cout << "Now you should aim to reach " << dailyReq << " calories everyday!" << endl;
+				break;
+			}
+			case 'q':
+			{
+				continues = false;
+				break;
+			}
+			default:
+			{
+				cout << "Invalid choice.";
+				break;
+			}
+		}
+	}while(continues);
 }

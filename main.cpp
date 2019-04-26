@@ -50,10 +50,11 @@ int main()
 			{
 				string nameToFind;
 				cout << "Enter food name: ";
-				cin >> nameToFind;
+				cin.ignore();
+				getline(cin, nameToFind);
 
-				addFoodToIntake(dailyIntake, counterIntake, foodItems, numberOfFoodItems,nameToFind);
-				break; //case 1 break
+				addFoodToIntake(dailyIntake, counterIntake, foodItems, numberOfFoodItems, nameToFind);
+				break; 
 			}
 			case 'd':
 			{
@@ -63,7 +64,7 @@ int main()
 			case 'l':
 			{
 				printList(dailyIntake,counterIntake);
-				break; //case 2 break
+				break;
 			}
 			case 'i':
 			{
@@ -93,6 +94,7 @@ int main()
 			case 'r':
 			{
 				resetIntake(dailyIntake, counterIntake);
+				cout << "Your list is empty now!\n" << endl;
 				break;
 			}
 			case 'u':

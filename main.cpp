@@ -14,7 +14,13 @@ int main()
 
 	int counterIntake = countDailyIntakeFile();
 	Cal * dailyIntake = new Cal [counterIntake];//array will contain the name and calories
-
+	
+	int cartDatabaseSize = countCartDatabase();
+	Cart * cartDatabase = new Cart[cartDatabaseSize];//database array
+	
+	int cartSize = countCart();
+	Cart * cart = new Cart[cartDatabaseSize];//database array
+	
 	Person x; //creating person
 	loadMemberInfo(x);//loading the person information
 	
@@ -23,7 +29,9 @@ int main()
 	
 	loadDailyIntake(dailyIntake);
 	loadCalDatabase(foodItems);
-
+	loadCartDatabase(cartDatabase);
+	loadCart(cart);
+	
 	bool continues = true; // this is for exiting the do loop
 	
 	do{
@@ -36,6 +44,8 @@ int main()
 		cout << "[ U ]  Update todays intake" << endl;
 		cout << "[ X ]  Update your information" << endl;
 		cout << "[ R ]  Reset today's daily intake" << endl;
+		cout << "[ V ]  View today's cart" << endl;
+		cout << "[ F ]  Delete from cart" << endl;
 		cout << "[ Q ]  To quit" << endl;
 
 		cout << "\n\t\t\t\t Enter one letter for your option:  ";
@@ -49,17 +59,22 @@ int main()
 		{
 			case 'a':
 			{
-				string nameToFind;
+				string nameToFind; int index;
 				cout << "Enter food name: ";
 				cin.ignore(); //need this for getline to work and not escape this getline
 				getline(cin, nameToFind);
 				spacetocomma(nameToFind);
-				addFoodToIntake(dailyIntake, counterIntake, foodItems, numberOfFoodItems, nameToFind);
+				addFoodToIntake(dailyIntake, counterIntake, foodItems, numberOfFoodItems, nameToFind,index);
+				
+				addToCart(cartDatabase, cartDatabaseSize, cart, cartSize,index);
 				break; 
 			}
 			case 'd':
 			{
-				deleteFood(dailyIntake,counterIntake);
+				if(counterIntake > 1)
+					deleteFood(dailyIntake,counterIntake);
+				else
+					cout << "No intake today, nothing to delete" << endl;
 				break;
 			}
 			case 'l':
@@ -110,8 +125,30 @@ int main()
 				cout << "Now you should aim to reach " << dailyReq << " calories everyday!" << endl;
 				break;
 			}
+			case 'v':
+			{
+				calculateCart(cart,cartSize);
+				break;
+			}
+			case 'f':
+			{
+				if(cartSize>1)
+					deleteCart(cart, cartSize);
+				else
+					cout << "The cart is empty" << endl;
+				break;
+			}
 			case 'q':
 			{
+				dailyReq=Calculator(x);
+				double m = addingTotalIntake(dailyIntake, counterIntake);
+				cout << "You have consumed " << m << " calories today!" << endl;
+				if(cartSize>1)
+					cout << "Your items will be delivered to you within 2-3 working days once the payment is successful!" << endl;
+				else
+					cout << "You have selected no items to purchase" << endl;
+				cout << "Bye and see you soon" << endl;
+				
 				continues = false;
 				break;
 			}

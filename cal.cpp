@@ -3,6 +3,7 @@
 
 string memeberInfoFileName = "Member.txt";
 string intakeFileName = "Intake.txt";
+string cartFileName = "Cart.txt";
 
 
 int countDailyIntakeFile()//function to count the number of items present in the Intake file
@@ -35,7 +36,6 @@ void spacetocomma(string &x)// a function to convert the spaces to commas so tha
 int countItems()//counts the number of items present in the main database i.e. Calfile
 {
 	ifstream fin("CalFile.txt");
-
 	string temp;
 	int i = 0;
 	while (getline(fin, temp, ';'))
@@ -70,8 +70,6 @@ void loadCalDatabase(Cal * &foodItems)//loading from the main database i.e Calfi
 		i++;
 	}
 	fin.close();
-
-
 }
 
 void growDatabase(Cal * &intake, int & inSize)
@@ -390,24 +388,24 @@ void growIntakeDatabase(Cal * &intake, int & inSize)
 	inSize += 1;//increasing the size variable
 }
 
-void addFoodToIntake(Cal * &intake, int &intakesize,Cal * database, int databasesize, string nameToFind)
+void addFoodToIntake(Cal * &intake, int &intakesize,Cal * database, int databasesize, string nameToFind, int &index)
 {
 	transform(nameToFind.begin(),nameToFind.end(),nameToFind.begin(),::toupper);//makes the inut string to upper case
 
-	int index=search(database,databasesize,nameToFind);//gets the index of the ocation of the item in the array of cal
+	index=search(database,databasesize,nameToFind);//gets the index of the ocation of the item in the array of cal
 	growIntakeDatabase(intake, intakesize);//increases the size of the dynamic array
 
-	if(index!=-1)
+	if(index!=-1)//if element found in the database
 	{
 		intake[intakesize-1].food = database[index].food ;//if it is found in the database then it stores the values into the intake struct
 		intake[intakesize-1].cal =database[index].cal ;
-		saveDailyIntake(intake,intakesize);//updates the intake file
+		saveDailyIntake(intake,intakesize);//updates the intake file		
 	}
 	else
 	{
 		addFood(database, databasesize, nameToFind);//else it asks the user to add a new value to the database and further stores it into the intake struct
 		intake[intakesize-1].food = database[databasesize-1].food ;//stores the values of the newly added item into the intake struct
-		intake[intakesize-1].cal =database[databasesize-1].cal ;
+		intake[intakesize-1].cal =database[databasesize-1].cal ;//how should we access the main database array?
 		
 		saveDailyIntake(intake,intakesize);//saves the values into the intake file
 		saveDatabase(database,databasesize);//saves the values into the main database i.e. calfile
@@ -415,7 +413,6 @@ void addFoodToIntake(Cal * &intake, int &intakesize,Cal * database, int database
 	
 	cout<<intake[intakesize-1].food<<" has been added to the daily intake\n"<<endl;
 }
-
 double addingTotalIntake(Cal * intake, int size)//function to find the number calories the person has already intaken in the day so far
 {
 	double total = 0;
@@ -655,3 +652,198 @@ void updatePersonInfo(Person &x)//function to update the information of the pers
 		}
 	}while(continues);
 }
+void growCart(Cart * &intake, int & inSize)
+{
+	Cart * intakeNew = new Cart [inSize +1];//always going to add only 1 element so +1
+
+	for(int i = 0; i < inSize; i++)
+	{
+		intakeNew[i] = intake[i];
+	}
+
+	delete [] intake;
+
+	intake = intakeNew;
+	inSize += 1;//incrementing the size
+}
+
+int countCart()
+{
+	ifstream fin("Cart.txt");
+
+	string temp;
+	int i = 0;
+	while (getline(fin, temp))
+	{
+		i++;
+	}
+	fin.close();
+	return i;
+}
+
+int countCartDatabase()
+{
+	ifstream fin("CartDatabase.txt");
+
+	string temp;
+	int i = 0;
+	while (getline(fin, temp))
+	{
+		i++;
+	}
+	fin.close();
+	return i;
+}
+
+void loadCartDatabase(Cart * &cart)//loading from the main database
+{
+	ifstream fin("CartDatabase.txt");
+
+	if(fin.fail())
+	{
+		cout << "Error in opening file" << endl;
+		exit(1);
+	}
+	
+	string p, name;
+	int i = 0;
+	while (getline(fin, name, ';'))
+	{
+		getline(fin,p);
+		cart[i].food = name;
+		cart[i].price = p;
+		i++;
+	}
+	fin.close();
+}
+
+void loadCart(Cart * &cart)//loading from the main database
+{
+	ifstream fin(cartFileName.c_str());
+
+	if(fin.fail())
+	{
+		cout << "Error in opening file" << endl;
+		exit(1);
+	}
+	
+	string p, name;
+	int i = 0;
+	while (getline(fin, name, ';'))
+	{
+		getline(fin,p);
+		cart[i].food = name;
+		cart[i].price = p;
+		i++;
+	}
+	fin.close();
+}
+
+void saveCart(Cart * cart, int size)//saving the updated list to the database
+{
+	ofstream fout(cartFileName.c_str());
+	
+	if(fout.fail())
+	{
+		cout << "Error in opening the file!" << endl;
+		exit(1);
+	}
+
+	for(int i = 0; i < size; i++)
+	{
+		if(i != size-1)
+			fout << cart[i].food << ";" << cart[i].price << endl;
+		else
+			fout << cart[i].food << ";" << cart[i].price;
+	}
+	fout.close();
+}
+
+
+void addToCart(Cart * database, int databaseSize, Cart * &cart, int &cartSize, int index)
+{
+	bool choice = false; char charDec;
+
+	if(index != -1)
+	{
+		cout << "Do you want to buy this item from us? It will cost you " << database[index].price << " HKD (Y/N): ";
+		cin >> charDec;
+		
+		while(charDec != 'y' && charDec != 'Y' && charDec != 'n' && charDec != 'N' )
+		{
+			cout << "\nPlease enter a valid input (Y/N): ";
+			cin >> charDec;
+		}
+		
+		if(charDec == 'y' || charDec == 'Y')
+			choice = true;
+		
+		if(choice)
+		{
+			growCart(cart, cartSize);
+			cart[cartSize-1].food = database[index].food;
+			cart[cartSize-1].price = database[index].price;
+			saveCart(cart, cartSize);
+			cout << cart[cartSize-1].food << " has been added to your cart!\n" << endl; 
+		}
+		else
+		{
+			return;
+		}
+	}
+}
+
+void calculateCart(Cart * m, int size)
+{
+	double total = 0;
+	for(int i = 0; i < size; i++)
+	{
+		cout << setw(20) << setw(20);
+		cout << left;
+		cout << m[i].food << "\t" << m[i].price << endl;
+		if(size == 1)
+			total += 0;
+		else
+			total += atof(m[i].price.c_str());
+	}
+	cout << "\n\nTotal value of the cart: " << total << " HKD\n" << endl;
+}
+
+void deleteCart(Cart * &m, int &size)//delete function that i want
+{
+	for(int i = 1; i < size; i++)
+	{
+		cout << "[" << i << "] " << m[i].food << "\t" <<m[i].price << endl;
+	}
+
+	int dec;
+	cout << "Choose the number of the item you want to delete: ";
+	cin >> dec;
+	while(dec < 1 || dec >= size)
+	{
+		cout << "Enter a valid number: ";
+		cin >> dec;
+	}	
+	Cart * d = new Cart[size-1];
+	int i=0,j=0;
+	while(j!=size){
+		if(j==dec)
+		{
+			j++;			
+			continue;
+		}
+		else
+		{
+			d[i].food=m[j].food;
+			d[i].price=m[j].price;
+			i++;
+			j++;
+		}
+	}
+	size=size-1;
+	delete [] m;
+	m=d;
+	saveCart(m,size);
+	cout << "The item has been deleted\n" << endl;
+}
+

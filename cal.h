@@ -23,6 +23,12 @@ struct Cal //structure of a calorie
 	string food;
 	string cal; //made this string as its easy to use, will convert to double when we need to add!
 };
+struct Cart
+{
+	string food;
+	string price;
+};
+
 
 //listing all function prototypes
 int countDailyIntakeFile();
@@ -41,10 +47,19 @@ void loadDailyIntake(Cal * &);
 void saveMemberInfo(Person );
 void saveDailyIntake(Cal * , int );
 void growIntakeDatabase(Cal * &, int & );
-void addFoodToIntake(Cal * &, int &,Cal *, int , string);
+void addFoodToIntake(Cal * &, int &,Cal *, int , string , int &);
 double addingTotalIntake(Cal * , int );
 void updateDailyIntake(Cal *&, int , Cal * , int );
 void resetIntake(Cal * &, int & );
 void updatePersonInfo(Person &x);
+void growCart(Cart * &, int & );
+int countCart();
+int countCartDatabase();
+void loadCartDatabase(Cart * &);
+void loadCart(Cart * &);
+void saveCart(Cart * , int);
+void addToCart(Cart *, int , Cart * &, int &, int );
+void calculateCart(Cart * , int);
+void deleteCart(Cart * &, int &);
 
 #endif

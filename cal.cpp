@@ -218,7 +218,7 @@ void deleteFood(Cal * &m, int &size)
 	}
 
 	int dec;
-	cout << "Choose the number of item you want to delete: ";
+	cout << "Choose the number of the item you want to delete: ";
 	cin >> dec;
 	while(dec < 1 || dec >= size)
 	{

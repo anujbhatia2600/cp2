@@ -79,6 +79,7 @@ int main()
 			}
 			case 'p':
 			{
+				dailyReq=Calculator(x);
 				double m = addingTotalIntake(dailyIntake, counterIntake);
 				cout << "Your total calories are: " << m << endl;
 				if(dailyReq - m >= 0)

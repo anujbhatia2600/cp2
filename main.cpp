@@ -53,7 +53,7 @@ int main()
 				cout << "Enter food name: ";
 				cin.ignore(); //need this for getline to work and not escape this getline
 				getline(cin, nameToFind);
-				
+				spacetocomma(nameToFind);
 				addFoodToIntake(dailyIntake, counterIntake, foodItems, numberOfFoodItems, nameToFind);
 				break; 
 			}

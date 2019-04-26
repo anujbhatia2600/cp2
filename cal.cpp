@@ -22,7 +22,15 @@ int countDailyIntakeFile()
 	fin.close();
 	return i;
 }
-
+void spacetocomma(string &x)
+{
+	int y=x.length();
+	for (int i=0;i<y;i++){
+		if(x[i]==' '){
+			x[i]=',';
+		}
+	}
+}
 
 int countItems()
 {

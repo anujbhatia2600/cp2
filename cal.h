@@ -26,6 +26,7 @@ struct Cal //structure of a calorie
 
 //listing all function prototypes
 int countDailyIntakeFile();
+void spacetocomma(string &);
 int countItems();
 void loadCalDatabase(Cal * &);
 void growDatabase(Cal * &, int & );

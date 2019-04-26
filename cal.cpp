@@ -210,7 +210,7 @@ int search(Cal * m, int size, string name)
 	return -1;
 }
 
-void deleteFood(Cal * &m, int &size)
+void deleteFood(Cal * &m, int &size)//delete function that i want
 {
 	for(int i = 1; i < size; i++)
 	{

@@ -808,8 +808,10 @@ void addToCart(Cart * database, int databaseSize, Cart * &cart, int &cartSize, i
 
 	if(index <= 9)
 	{
-		cout << "Do you want to buy this item from us? It will cost you " << database[index].price << " HKD (Y/N): ";
-		cout<<endl;
+		cout << "Do you want to buy this item from us?" << endl; 
+		cout<< "It costs (in HKD): ";
+		cout << database[index].price << endl;
+		cout << "(Y/N): ";		
 		cin >> charDec;
 		
 		while(charDec != 'y' && charDec != 'Y' && charDec != 'n' && charDec != 'N' )

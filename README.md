@@ -43,8 +43,8 @@ To access the program, the user needs to use the terminal and follow the given s
 4. The user needs to now execute the compiled file by using:"./census".
 Now the user can access our program.
 * Note: It may be possible that the user maybe denied the access and in this situation the user can use :"chmod a+x census".
-### SPECIAL FEATURE:
-# The special feature that the program provides is that when a user inputs a item which already exist in our database, we give him/her the option to buy that product from us. 
+# SPECIAL FEATURE:
+### The special feature that the program provides is that when a user inputs a item which already exist in our database, we give him/her the option to buy that product from us. 
 The different function that are present under this special feature are:
 * ADD: If the item is present in our database(before the start of the program), then the user can add this item into his cart.
 * DELETE: The user can also delete items from the cart.

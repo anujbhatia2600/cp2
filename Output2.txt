@@ -1,0 +1,83 @@
+You should aim to reach 1828 calories everyday!
+
+[ A ]  To add meals to your daily intake
+[ D ]  Delete an item from todays intake
+[ L ]  List today's intake
+[ I ]  Print my information
+[ P ]  Print today's total calorie intake
+[ U ]  Update todays intake
+[ X ]  Update your information
+[ R ]  Reset today's daily intake
+[ V ]  View today's cart
+[ F ]  Delete from cart
+[ Q ]  To quit
+
+				 Enter one letter for your option:  
+[ 1 ]  Change name
+[ 2 ]  Change weight
+[ 3 ]  Change height
+[ 4 ]  Change age
+[ 5 ]  Change gender
+[ 6 ]  To quit
+
+				 Enter one number for your option:  Enter the name: Now you should aim to reach 1828 calories everyday!
+
+[ A ]  To add meals to your daily intake
+[ D ]  Delete an item from todays intake
+[ L ]  List today's intake
+[ I ]  Print my information
+[ P ]  Print today's total calorie intake
+[ U ]  Update todays intake
+[ X ]  Update your information
+[ R ]  Reset today's daily intake
+[ V ]  View today's cart
+[ F ]  Delete from cart
+[ Q ]  To quit
+
+				 Enter one letter for your option:  
+[ 1 ]  Change name
+[ 2 ]  Change weight
+[ 3 ]  Change height
+[ 4 ]  Change age
+[ 5 ]  Change gender
+[ 6 ]  To quit
+
+				 Enter one number for your option:  Enter the weight: Now you should aim to reach 1738 calories everyday!
+
+[ A ]  To add meals to your daily intake
+[ D ]  Delete an item from todays intake
+[ L ]  List today's intake
+[ I ]  Print my information
+[ P ]  Print today's total calorie intake
+[ U ]  Update todays intake
+[ X ]  Update your information
+[ R ]  Reset today's daily intake
+[ V ]  View today's cart
+[ F ]  Delete from cart
+[ Q ]  To quit
+
+				 Enter one letter for your option:  
+[ 1 ]  Change name
+[ 2 ]  Change weight
+[ 3 ]  Change height
+[ 4 ]  Change age
+[ 5 ]  Change gender
+[ 6 ]  To quit
+
+				 Enter one number for your option:  Enter the height: Now you should aim to reach 1751 calories everyday!
+
+[ A ]  To add meals to your daily intake
+[ D ]  Delete an item from todays intake
+[ L ]  List today's intake
+[ I ]  Print my information
+[ P ]  Print today's total calorie intake
+[ U ]  Update todays intake
+[ X ]  Update your information
+[ R ]  Reset today's daily intake
+[ V ]  View today's cart
+[ F ]  Delete from cart
+[ Q ]  To quit
+
+				 Enter one letter for your option:  You have consumed 1434 calories today!
+Your items will be delivered to you within 2-3 working days once the payment is successful!
+Bye and see you soon

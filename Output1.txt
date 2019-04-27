@@ -1,0 +1,92 @@
+Please enter your Name: 
+Please enter your Height(cm): 
+Please enter your Age: 
+Please enter your Weight(kg): 
+Please enter your Gender(M/F): 
+You should aim to reach 1828 calories everyday!
+
+[ A ]  To add meals to your daily intake
+[ D ]  Delete an item from todays intake
+[ L ]  List today's intake
+[ I ]  Print my information
+[ P ]  Print today's total calorie intake
+[ U ]  Update todays intake
+[ X ]  Update your information
+[ R ]  Reset today's daily intake
+[ V ]  View today's cart
+[ F ]  Delete from cart
+[ Q ]  To quit
+
+				 Enter one letter for your option:  Enter food name: BUTTER has been added to the daily intake
+
+Do you want to buy this item from us?
+It costs (in HKD): 60
+(Y/N): BUTTER has been added to your cart!
+
+
+[ A ]  To add meals to your daily intake
+[ D ]  Delete an item from todays intake
+[ L ]  List today's intake
+[ I ]  Print my information
+[ P ]  Print today's total calorie intake
+[ U ]  Update todays intake
+[ X ]  Update your information
+[ R ]  Reset today's daily intake
+[ V ]  View today's cart
+[ F ]  Delete from cart
+[ Q ]  To quit
+
+				 Enter one letter for your option:  FOOD                	CALORIES
+BUTTER              	717
+BUTTER              	717
+
+[ A ]  To add meals to your daily intake
+[ D ]  Delete an item from todays intake
+[ L ]  List today's intake
+[ I ]  Print my information
+[ P ]  Print today's total calorie intake
+[ U ]  Update todays intake
+[ X ]  Update your information
+[ R ]  Reset today's daily intake
+[ V ]  View today's cart
+[ F ]  Delete from cart
+[ Q ]  To quit
+
+				 Enter one letter for your option:  FOOD                	PRICE
+BUTTER              	60
+BUTTER              	60
+
+
+Total value of the cart: 120 HKD
+
+
+[ A ]  To add meals to your daily intake
+[ D ]  Delete an item from todays intake
+[ L ]  List today's intake
+[ I ]  Print my information
+[ P ]  Print today's total calorie intake
+[ U ]  Update todays intake
+[ X ]  Update your information
+[ R ]  Reset today's daily intake
+[ V ]  View today's cart
+[ F ]  Delete from cart
+[ Q ]  To quit
+
+				 Enter one letter for your option:  Your total calories are: 1434
+You have 394 left for the day
+
+[ A ]  To add meals to your daily intake
+[ D ]  Delete an item from todays intake
+[ L ]  List today's intake
+[ I ]  Print my information
+[ P ]  Print today's total calorie intake
+[ U ]  Update todays intake
+[ X ]  Update your information
+[ R ]  Reset today's daily intake
+[ V ]  View today's cart
+[ F ]  Delete from cart
+[ Q ]  To quit
+
+				 Enter one letter for your option:  You have consumed 1434 calories today!
+Your items will be delivered to you within 2-3 working days once the payment is successful!
+Bye and see you soon

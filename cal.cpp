@@ -260,23 +260,63 @@ void loadMemberInfo(Person & x)
 		cout <<"File doesn't exist" <<endl;
 		exit(1);
 	}
-	string name; double height;	int age; double weight; char gender; bool genderBool = false;
+	string name;
+	double height;
+	int age;
+	double weight;
+        char gender;
+	bool genderBool = true;
 	if(fin.peek() == std::ifstream::traits_type::eof())//checks if the file of the member is empty and hence asks for the details of the member
 	{
-		cout<<"Please enter you Name: ";
+		cout<<"Please enter your Name: ";
 		cin>>name;
 		cout<<endl;
-		cout<<"Please enter you Height(cm): ";
+		int lengthOfName = name.length();
+		while(lengthOfName < 2)//validation for the name of the member
+		{
+			cout << "\nERROR!, Please enter a valid name" << endl;
+			cout << "Enter a name (more than 1 letter): ";
+			cin >> name;
+			lengthOfName = name.length();
+		}
+		
+		cout<<"Please enter your Height(cm): ";
 		cin>>height;
 		cout<<endl;
-		cout<<"Please enter you Age: ";
+		while(height < 100 || height > 300)
+		{
+			cout << "\nERROR!, Please enter a valid height" << endl;//validation of the height entered by the user
+			cout << "Enter height (100 < height < 300 in cm): ";
+			cin >> height;
+		}
+		
+		cout<<"Please enter your Age: ";
 		cin>>age;
 		cout<<endl;
-		cout<<"Please enter you Weight(kg): ";
+		while(age < 10 || age > 80)
+		{
+			cout << "\nERROR!, Please enter a valid age" << endl;//validation for the age entered by the user
+			cout << "Enter age (10 < age < 80): ";
+			cin >> age;
+		}
+		cout<<"Please enter your Weight(kg): ";
 		cin>>weight;
 		cout<<endl;
-		cout<<"Please enter you Gender(M/F): ";
+		while(weight < 40 || weight > 400)//validation for the weight
+		{
+			cout << "\nERROR!, Please enter a valid weight" << endl;
+			cout << "Enter weight (40 < weight < 400): ";
+			cin >> weight;
+		}
+		
+		cout<<"Please enter your Gender(M/F): ";
 		cin>>gender;
+		while(genderChar != 'm' && genderChar != 'f' && genderChar != 'M' && genderChar != 'F')//validation for the gender input of the user
+		{
+			cout << "\nERROR!, Please enter a valid gender" << endl;
+			cout << "Enter gender (M or F): ";
+			cin >> genderChar;
+		}
 		if(gender == 'F' || gender == 'f')
 		{
 			genderBool = false;
@@ -287,7 +327,6 @@ void loadMemberInfo(Person & x)
 		x.age = age;
 		x.weight = weight;
 		x.gender = genderBool;
-		return ;//have to exit otherwise it will try to find a file
 	}
 	else
 	{
@@ -300,6 +339,8 @@ void loadMemberInfo(Person & x)
 			x.gender = gender;
 		}
 	}
+	saveMemberInfo(x);
+	
 
 	fin.close();
 }
@@ -764,9 +805,10 @@ void addToCart(Cart * database, int databaseSize, Cart * &cart, int &cartSize, i
 {
 	bool choice = false; char charDec;
 
-	if(index != -1)
+	if(index <= 9)
 	{
 		cout << "Do you want to buy this item from us? It will cost you " << database[index].price << " HKD (Y/N): ";
+		cout<<endl;
 		cin >> charDec;
 		
 		while(charDec != 'y' && charDec != 'Y' && charDec != 'n' && charDec != 'N' )
@@ -791,6 +833,15 @@ void addToCart(Cart * database, int databaseSize, Cart * &cart, int &cartSize, i
 			return;
 		}
 	}
+
+	else {
+
+	  return;
+	  
+	    }
+	
+
+	  
 }
 
 void calculateCart(Cart * m, int size)

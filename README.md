@@ -6,15 +6,15 @@ Recently, it has been proven that health is very important for a human being and
 ## Assumption: 
 * The calories of the food items lies in the range 0-1000.
 * The files linked with the Project can only be accessed through the program and user is not allowed to access these files from the backend.
-* The Daily Intake file ca never be empty and it has a column header row which can never be removed.
-* A new day starts manually and not automatically.
+* The Daily Intake file can never be empty and it has a column header row which can never be removed.
+* A new day starts manually and not automatically, the user will have to reset his/her intake in the morning, this option has been provided.
 
 ## Problem setting: 
 We want every person to stay aware of their diet, so they can stay fit and healthy in the long term. Hence, we aim on making a Calorie Tracker, wherein everyone can aim to acheive the optimum calorie intake and keep record of their daily calorie intake to eat healthy. 
 
 ## Functionalities:
-The Calorie Tracker is a simple to use application wherein a user is supposed to enter his/her basic information like Name, Age, Height, Weight, Gender. The application then calculates the users optimum calorie intake based on the Mifflin-St. Jeor Equation( which the American Dietetic Association finds most reliable). Then the existing files are loaded into the strcut files using the loadDailyIntake and loadCalDatabase function which call the the Intake file and the CalFile as well. Then the user gets various options in form of menu:
-* ADD: if the user selects it then the user can add a food item to the list and it calls the addFoodToIntake function. In this function the size of the intake dynamic array is increased by 1 after which the food item is searched in the calfile(our database) using the search function. If found then it adds the name as well as calories corresponding to it in the intake struct and file. If not found then it ask the user to input its calories. Then it adds it to the dailt y intake struct and file as well as our database. 
+The Calorie Tracker is a simple to use application wherein a user is supposed to enter his/her basic information like Name, Age, Height, Weight, Gender. The application then calculates the users optimum calorie intake based on the Mifflin-St. Jeor Equation (which the American Dietetic Association finds most reliable). Then the existing files are loaded into the struct files using the loadDailyIntake and loadCalDatabase functions which call the Intake and Calorie database file (CalFile.txt) respectively. Then the user gets various options in form of a menu:
+* **ADD**: if the user selects it then the user can add a food item to the list and it calls the addFoodToIntake function. In this function the size of the intake dynamic array is increased by 1 after which the food item is searched in the calfile(our database) using the search function. If found then it adds the name as well as calories corresponding to it in the intake struct and file. If not found then it ask the user to input its calories. Then it adds it to the dailt y intake struct and file as well as our database. 
 * DELETE: It gives the user a menu of the intakes so far and using a new dynamic array deletes the intake that the user want using a while loop storing the values in the new dynamic array. 
 * LIST: This call the printList function where the list of the daily intake items so far is printed.
 * PRINT INFO: This is used to print the information of the user by callin the various variable of the struct x of the datatype person.

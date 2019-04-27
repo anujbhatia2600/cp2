@@ -693,6 +693,7 @@ void updatePersonInfo(Person &x)//function to update the information of the pers
 		}
 	}while(continues);
 }
+//special feature codes: 
 void growCart(Cart * &intake, int & inSize)
 {
 	Cart * intakeNew = new Cart [inSize +1];//always going to add only 1 element so +1

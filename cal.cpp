@@ -311,11 +311,11 @@ void loadMemberInfo(Person & x)
 		
 		cout<<"Please enter your Gender(M/F): ";
 		cin>>gender;
-		while(genderChar != 'm' && genderChar != 'f' && genderChar != 'M' && genderChar != 'F')//validation for the gender input of the user
+		while(gender != 'm' && gender != 'f' && gender != 'M' && gender != 'F')//validation for the gender input of the user
 		{
 			cout << "\nERROR!, Please enter a valid gender" << endl;
 			cout << "Enter gender (M or F): ";
-			cin >> genderChar;
+			cin >> gender;
 		}
 		if(gender == 'F' || gender == 'f')
 		{
